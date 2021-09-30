@@ -17,7 +17,6 @@
 |pfcode|llave foranea|
 
 ### Nombre de las tablas 
-
 |nombre de la tbls|significados|
 |-------------|----------------------------|
 |tmaecomponent|tabla maestra de componentes de los equipos que se disponen|
@@ -28,3 +27,12 @@
 |thistctrolrequipo |tabla historica de control de equipo|
 |thistcomponentred |tabla historica de componentes de red y sus configuraciones|
 
+
+### Rutas
+**Las rutas que dispongan middleware pasar el token por el header o body nombre de la variable 'token'**
+
+|rutas          |mthd https|                 descripcion|         middleware         |
+|---------------|----------|----------------------------|----------------------------|
+|getGeneral     |get       | obtener informacion general como nombre usuario, proveedor, departamento etc|no|
+|getComponent   |get       | obtener todos las partes de los equipos disponibles|no|
+|insertComponent|post      | registrar una nueva parte de un equipo|no|

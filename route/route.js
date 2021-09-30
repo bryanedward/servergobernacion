@@ -1,18 +1,29 @@
 const express = require('express')
-const { insertCompany, getCompany } = require('../controller/company')
+const { getVendor, insertVendor } = require('../controller/vendors')
 const { insertUser, loginUser } = require('../controller/controllerUser')
 const { insertDepartament } = require('../controller/department')
 const auth = require('../middleware/auth')
+const { insertComponent, getComponent } = require('../controller/components')
+const { getGeneral } = require('../controller/general')
 const router = express.Router()
 //access to login and create user
 router.post('/save', insertUser)
 router.post('/login', loginUser)
 
 // routers for crud companies
-router.get('/getCompanies', getCompany)
-router.post('/insertCompany', insertCompany)
+router.get('/getVendors', getVendor)
+router.post('/insertVendors', insertVendor)
 
 // routers for crud departtament
 router.post('/saveDepartament', insertDepartament)
+
+
+//routers for crud components
+router.get('/getComponent', getComponent)
+router.post('/insertComponent', insertComponent)
+
+//routers for crud components
+router.get('/getGeneral', getGeneral)
+
 
 module.exports = router

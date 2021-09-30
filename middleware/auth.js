@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 module.exports = function (req, res, next) {
-    //validar de
+    //validate token 
     var token = req.body.token || req.headers["token"];
 
-    if (!token) return res.json({ message: "empyy token" })
+    if (!token) return res.json({ message: "empty token" })
 
     jwt.verify(token, process.env.TOKENKKEY, (err, decoded) => {
         if (err) {

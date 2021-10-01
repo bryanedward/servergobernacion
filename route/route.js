@@ -7,8 +7,8 @@ const { insertComponent, getComponent } = require('../controller/components')
 const { getGeneral } = require('../controller/general')
 const router = express.Router()
 //access to login and create user
-router.post('/save', insertUser)
-router.post('/login', loginUser)
+router.post('/createUser', insertUser)
+router.post('/loginUser', loginUser)
 
 // routers for crud companies
 router.get('/getVendors', getVendor)

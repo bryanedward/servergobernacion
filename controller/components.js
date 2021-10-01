@@ -4,7 +4,7 @@ const component = {
     //TODO:INSERT A NEW COMPONENT (CASE - MEMORY RAM  - SWITCH)
     insertComponent: async function (req, res) {
         const { nombre_component, descrip_component, marca_component,
-            model_component, numerser_component, cant_component } = req.body
+            model_component, numerser_component } = req.body
 
         await client.query(`
         INSERT INTO tmaecomponent(nombre_component, descrip_component, marca_component, 

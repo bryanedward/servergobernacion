@@ -42,5 +42,9 @@
 |rutas          |mthd https|                 descripcion|     parametros / body             | middleware       |
 |---------------|----------|----------------------------|-----------------------------------|------------------|
 |getGeneral     |get       | obtener informacion general como nombre usuario, proveedor, departamento etc|  |  |
+|getUser        |get       | obtener una lista de usuarios                      |                           |  |
+|getVendors     |get       | obtener una lista de proveedores|  |  |
+|getDepartament |get       | obtener todos los departamentos existentes         |                           |  |
 |getComponent   |get       | obtener todos las partes de los equipos disponibles|                           |  |
 |insertComponent|post      | registrar una nueva parte de un equipo | nombre_component,descrip_component,marca_component,model_component,numerser_component| SI |
+|insertCtrolequipo|post    | registrar una nuevo control de equipo | descrip_equipo,fechactrol_equipo,firma_equipo,pfced_usuario,pfcod_departament| SI |

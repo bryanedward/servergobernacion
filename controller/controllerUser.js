@@ -21,7 +21,8 @@ var modelUser = {
             })
 
         } catch (error) {
-            res.status(404).send({message: error})
+            console.log(error);
+            res.status(404).send({ message: "variables incorrrect" })
         }
     },
     loginUser: async function (req, res) {

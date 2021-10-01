@@ -8,6 +8,7 @@ var modelUser = {
         //FIXME: ADD COLUMN ROL
         try {
             const { pass_usuar, cedul_usuar, nomb_usuar, telef_usuar } = req.body;
+            console.log(req.body);
             var passEncript = await bcrypt.hash(pass_usuar, 10);
             var newToken = generateToken(cedul_usuar, pass_usuar)
             await client.query(`INSERT INTO tmaeusuar(cedul_usuar, nomb_usuar, telef_usuar, pass_usuar, token_usuar)

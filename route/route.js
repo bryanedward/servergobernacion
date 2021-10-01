@@ -3,7 +3,7 @@ const { getVendor, insertVendor } = require('../controller/vendors')
 const { insertUser, loginUser } = require('../controller/controllerUser')
 const { getDepartament } = require('../controller/department')
 const auth = require('../middleware/auth')
-const { insertComponent, getComponent } = require('../controller/components')
+const { insertComponent, getComponent, getOneComponent } = require('../controller/components')
 const { getGeneral } = require('../controller/general')
 const { getUser } = require('../controller/user')
 const { insertCtrolEquipk } = require('../controller/ctrolequipo')
@@ -29,7 +29,7 @@ router.post('/insertCtrolequipo', insertCtrolEquipk)
 
 //routers for crud components
 router.post('/insertComponent', insertComponent)
-
+router.get('/getOneComponent', getOneComponent)
 
 //routers for crud
 router.get('/getGeneral', getGeneral)

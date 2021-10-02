@@ -39,12 +39,40 @@
 ### Rutas
 **Las rutas que nceesiten el middleware(si) pasar el token por el header o body nombre de la variable 'token'**
 
+```diff
+La ruta saveReport la variable componentes debe ser envia en un array junto de un json para que la funcion procedure de psql ejecute siguiente ejemplo
+```
+
+```js
+
+"componentes":[
+  {
+    "nombre_component": "monitor",
+    "descrip_component": "pantalla rota",
+    "marca_component": "smox4",
+    "model_component": "moni",
+    "numerser_component": "412321SAD",
+    "pfcod_proveed": 7,
+    "pfcod_equipo": "00004",
+    "pfcod_componentred": null
+  },
+  {
+    "nombre_component": "memoria ram",
+    "descrip_component": "en mal estado",
+    "marca_component": "psc",
+    "model_component": "sds",
+    "numerser_component": "4122232D",
+    "pfcod_proveed": 7,
+    "pfcod_equipo": "00004",
+    "pfcod_componentred": null
+  }
+]
+```
+
 |rutas          |mthd https|                 descripcion|     parametros / body             | middleware       |
 |---------------|----------|----------------------------|-----------------------------------|------------------|
-|getGeneral     |get       | obtener informacion general como nombre usuario, proveedor, departamento etc|  |  |
 |getUser        |get       | obtener una lista de usuarios                      |                           |  |
-|getVendors     |get       | obtener una lista de proveedores|  |  |
+|getVendors     |get       | obtener una lista de proveedores                   |                           |  |
 |getDepartament |get       | obtener todos los departamentos existentes         |                           |  |
-|getComponent   |get       | obtener todos las partes de los equipos disponibles|                           |  |
-|insertComponent|post      | registrar una nueva parte de un equipo | nombre_component,descrip_component,marca_component,model_component,numerser_component| SI |
-|insertCtrolequipo|post    | registrar una nuevo control de equipo | descrip_equipo,fechactrol_equipo,firma_equipo,pfced_usuario,pfcod_departament| SI |
+|getReport      |post      | obtener informacion general como nombre usuario, proveedor, departamento etc|cedul_usuar, cod_equipo |  |
+|saveReport     |post      | guardar el informe total   |cod_equipo,descrip_equipo,fechactrol_equipo,firma_equipo pfced_usuario, pfcod_departament, componentes,pfcod_proveed,nomb_soft,descrip_soft licencia_soft ||                                                                                                             

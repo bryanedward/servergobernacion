@@ -8,7 +8,7 @@ var company = {
         const {nombre_proveed, descrip_proveed, fechcompr_proveed} = req.body
 
         await client.query(`INSERT INTO thistproveed(nombre_proveed, descrip_proveed, 
-        fechcompr_proveed) VALUES ('${nombre_proveed}', '${descrip_proveed}', 
+            fechadquis_proveed) VALUES ('${nombre_proveed}', '${descrip_proveed}', 
         '${fechcompr_proveed}')`, (err, data) => {
             if(err){
                 res.status(404).json({message: "err"})

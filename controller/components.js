@@ -1,6 +1,7 @@
 const client = require("../config")
 
 const component = {
+    //FIXME:SIN UN POSBILE ELIMIMNACION
     //TODO:INSERT A NEW COMPONENT (CASE - MEMORY RAM  - SWITCH)
     insertComponent: async function (req, res) {
         const { nombre_component, descrip_component, marca_component,

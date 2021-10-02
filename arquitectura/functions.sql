@@ -17,7 +17,7 @@ BEGIN
 	INSERT INTO tmaecomponent (nombre_component, descrip_component, marca_component, model_component, 
 	 numerser_component, pfcod_proveed, pfcod_equipo) 
 	 VALUES ( i->>'nombre_component', i->>'descrip_component', i->>'marca_component', i->>'model_component', 
-	 i->>'numerser_component', CAST(i->>'pfcod_proveed' AS INTEGER), CAST(i->>'cod_equipo' AS INTEGER) );
+	 i->>'numerser_component', CAST(i->>'pfcod_proveed' AS INTEGER), CAST(i->>'pfcod_equipo' AS INTEGER) );
   END LOOP;
   INSERT INTO tmaesoft( nomb_soft, descrip_soft, licencia_soft, pfcod_proveed, pfcod_equipo) 
 	 VALUES ( nomb_soft, descrip_soft, licencia_soft, pfcod_proveed, cod_equipo);

@@ -1,5 +1,5 @@
 const client = require("../config")
-
+//FIXME:SIN USO POSBILE ELIMINACION
 const ctrolequipo = {
     insertCtrolEquipk: async function (req, res) {
 

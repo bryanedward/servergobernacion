@@ -1,9 +1,10 @@
 ### Variables de entorno
 **Crear el archivo .env con las siguientes variables**
-- DATABASE_URL= **"colocar el connectstring"**
-- API_PORT= **"colocar el puerto del servidor"**
-- TOKENKKEY= **"llave secreta para el token"**
-
+```diff
+DATABASE_URL= colocar el connectstring
+API_PORT= colocar el puerto del servidor
+TOKENKKEY= llave secreta para el token
+````
 
 ## Diseño de la base de datos
 ![alt text](./arquitectura/db.PNG)
@@ -27,6 +28,9 @@
 |thistctrolrequipo |tabla historica de control de equipo|
 |thistcomponentred |tabla historica de componentes de red y sus configuraciones|
 
+### Ruta de api general
+> https://servergobernacion.herokuapp.com/
+
 ### Middleware
 **Para generar el token se hace cuando te registras o al acceder al sistema**
 
@@ -39,9 +43,7 @@
 ### Rutas
 **Las rutas que nceesiten el middleware(si) pasar el token por el header o body nombre de la variable 'token'**
 
-```diff
-La ruta saveReport la variable componentes debe ser envia en un array junto de un json para que la funcion procedure de psql ejecute siguiente ejemplo
-```
+>La ruta saveReport la parametro componentes debe ser envia en un array junto de un json para que la funcion procedure de psql ejecute siguiente ejemplo
 
 ```js
 

@@ -23,6 +23,16 @@ var modelUser = {
             res.status(404).send({ message: "variables incorrrect" })
         }
     },
+
+    getInfoUser: async function (req, res) {
+        //TODO: GET data of the user
+        var token = req.body.token || req.headers["token"];
+        const decoded = jwt.verify(token, process.env.TOKENKKEY);
+        var getInfo = await client.query(`SELECT cedul_usuar, nomb_usuar, telef_usuar FROM tmaeusuar WHERE cedul_usuar = '${decoded.usuarced}'`)
+        res.json(getInfo.rows[0])
+
+    },
+
     loginUser: async function (req, res) {
         //TODO:update token of the user 
         try {
@@ -52,7 +62,7 @@ function generateToken(cedul, pass) {
     //generate token for one hour
     return token = jwt.sign({ usuarced: cedul, pass }, process.env.TOKENKKEY, {
         algorithm: "HS256",
-        expiresIn: "90s"
+        expiresIn: process.env.EXPIRESTIME
     });
 }
 

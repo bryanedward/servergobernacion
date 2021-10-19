@@ -3,13 +3,24 @@ const client = require('../config');
 const jwt = require('jsonwebtoken')
 
 var modelUser = {
+
+    getAllUser: async function (req, res) {
+        try {
+            var infoUser = await client.query(`SELECT cedul_usuar, nomb_usuar,
+            telef_usuar, rol_usuar FROM tmaeusuar`)
+            res.json(infoUser.rows[0])
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
     insertUser: async function (req, res) {
         //TODO:create user and one hour for expiration of token
         //FIXME: ADD COLUMN ROL
         try {
             const { pass_usuar, cedul_usuar, nomb_usuar, telef_usuar } = req.body;
             var passEncript = await bcrypt.hash(pass_usuar, 10);
-            var newToken = generateToken(cedul_usuar, pass_usuar)
+            var newToken = generateToken(cedul_usuar)
             await client.query(`INSERT INTO tmaeusuar(cedul_usuar, nomb_usuar, telef_usuar, pass_usuar, token_usuar)
             VALUES('${cedul_usuar}','${nomb_usuar}','${telef_usuar}', '${passEncript}', '${newToken}') RETURNING token_usuar`, (err, data) => {
                 if (err) {
@@ -40,7 +51,7 @@ var modelUser = {
             var queryUsuario = await client.query(`select pass_usuar from tmaeusuar where cedul_usuar = '${cedul_usuar}'`)
             var validatePass = await bcrypt.compare(pass_usuar, queryUsuario.rows[0].pass_usuar)
             if (validatePass) {
-                var updateToken = generateToken(cedul_usuar, pass_usuar);
+                var updateToken = generateToken(cedul_usuar);
                 await client.query(`update tmaeusuar set token_usuar = '${updateToken}' 
                 where cedul_usuar = '${cedul_usuar}' RETURNING token_usuar`, (err, data) => {
                     if (data.rowCount === 0) {
@@ -58,11 +69,11 @@ var modelUser = {
     }
 }
 
-function generateToken(cedul, pass) {
+function generateToken(cedul) {
     //generate token for one hour
-    return token = jwt.sign({ usuarced: cedul, pass }, process.env.TOKENKKEY, {
+    return token = jwt.sign({ usuarced: cedul }, process.env.TOKENKKEY, {
         algorithm: "HS256",
-        expiresIn: process.env.EXPIRESTIME
+        expiresIn: "1h"
     });
 }
 

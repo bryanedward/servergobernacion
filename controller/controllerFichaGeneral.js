@@ -2,13 +2,14 @@ const client = require("../config")
 
 const general = {
 
-    insertGeneral: async function name(req, res) {
+    saveReportComputer: async function (req, res) {
+        //save report of the computers
         try {
-
             const { cod_equipo, descrip_equipo, fechactrol_equipo,
                 firma_equipo, pfced_usuario, pfcod_departament,
                 componentes, pfcod_proveed, nomb_soft, descrip_soft, licencia_soft
             } = req.body
+
             await client.query(`
             call guardarcompone(
                 '${cod_equipo}','${descrip_equipo}','${fechactrol_equipo}', 
@@ -16,8 +17,7 @@ const general = {
                 '${JSON.stringify(componentes)}', ${pfcod_proveed} ,'${nomb_soft}', '${descrip_soft}' ,'${licencia_soft}')
             `, (err, data) => {
                 if (err) {
-                    console.log(err);
-                    res.status(404).send({ message: "type data incorrect" })
+                    res.status(404).send({ message: err.detail })
                 } else {
                     res.status(200).send({ message: "created" })
                 }
@@ -28,7 +28,8 @@ const general = {
     },
 
     //TODO:IMPLEMENTACION DE UNA VISTA
-    getGeneral: async function (req, res) {
+    getAllReportComputer: async function (req, res) {
+        //list of report of one user
         const { cedul_usuar, cod_equipo } = req.body
         await client.query(
             `select thistctrolequipo.cod_equipo, 

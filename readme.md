@@ -49,24 +49,20 @@ TOKENKKEY= llave secreta para el token
 
 "componentes":[
   {
-    "nombre_component": "monitor",
-    "descrip_component": "pantalla rota",
+    "descrip_component": "monitor",
     "marca_component": "smox4",
     "model_component": "moni",
     "numerser_component": "412321SAD",
-    "pfcod_proveed": 7,
-    "pfcod_equipo": "00004",
-    "pfcod_componentred": null
+    "pfcod_proveed": 1,
+    "pfcod_equipo": "00010"
   },
   {
-    "nombre_component": "memoria ram",
-    "descrip_component": "en mal estado",
+    "descrip_component": "placa madre",
     "marca_component": "psc",
     "model_component": "sds",
     "numerser_component": "4122232D",
-    "pfcod_proveed": 7,
-    "pfcod_equipo": "00004",
-    "pfcod_componentred": null
+    "pfcod_proveed": 1,
+    "pfcod_equipo": "00010"
   }
 ]
 ```

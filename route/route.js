@@ -3,14 +3,13 @@ const { getVendor, insertVendor } = require('../controller/vendors')
 const { insertUser, loginUser, getInfoUser, getAllUser } = require('../controller/controllerUser')
 const { getDepartament, insertDepartment } = require('../controller/controllerDepartment')
 const auth = require('../middleware/auth')
-const { getGeneral, insertGeneral } = require('../controller/controllerFichaGeneral')
-const { saveReportRed } = require('../controller/controllerRed')
+const { getAllReportComputer, saveReportComputer } = require('../controller/controllerFichaGeneral')
+const { saveReportRed, getAllReportRed } = require('../controller/controllerRed')
 const router = express.Router()
 //access to login and create user
 router.post('/createUser', insertUser)
 router.post('/loginUser', loginUser)
-//FIXME: CAMBIO A GET ESTA RUTA
-router.post('/getInfoUser', auth ,getInfoUser)
+router.get('/getInfoUser', auth ,getInfoUser)
 router.get('/getAllUser', getAllUser)
 // routers for crud proveedores
 router.get('/getVendors', getVendor)
@@ -19,9 +18,10 @@ router.post('/insertVendors', insertVendor)
 router.get('/getDepartament', getDepartament)
 router.post('/insertdepartament', insertDepartment)
 //routers for crud for reports
-router.post('/getReport', getGeneral)
-router.post('/saveReport', insertGeneral)
+router.post('/getReport', getAllReportComputer)
+router.post('/saveReport', saveReportComputer)
 router.post('/saveReportRed', saveReportRed)
+router.post('/getAllReportRed', getAllReportRed)
 
 
 

@@ -69,9 +69,10 @@ TOKENKKEY= llave secreta para el token
 
 |rutas          |mthd https|                 descripcion|     parametros / body             | middleware       |
 |---------------|----------|----------------------------|-----------------------------------|------------------|
-|getInfoUser    |post      | obtener informaicion del usuario logueado          |           | si  |
-|getUser        |get       | obtener una lista de usuarios                      |           |     |
-|getVendors     |get       | obtener una lista de proveedores                   |           |     |
-|getDepartament |get       | obtener todos los departamentos existentes         |           |     |
+|getInfoUser    |get       | obtener informaicion del usuario logueado|                     | si  |
+|getUser        |get       | obtener una lista de usuarios|                                 |     |
+|updateUser     |post      | actualizar usuario         |nomb_usuar, telef_usuar, cedul_usuar, pass_usuar|     |
+|getVendors     |get       | obtener una lista de proveedores|                                           |     |
+|getDepartament |get       | obtener todos los departamentos existentes|                                 |     |
 |getReport      |post      | obtener informacion general como nombre usuario, proveedor, departamento etc|cedul_usuar, cod_equipo |  |
 |saveReport     |post      | guardar el informe total   |cod_equipo,descrip_equipo,fechactrol_equipo,firma_equipo pfced_usuario, pfcod_departament, componentes,pfcod_proveed,nomb_soft,descrip_soft licencia_soft ||                                                                                                             

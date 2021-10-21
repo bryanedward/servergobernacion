@@ -1,6 +1,6 @@
 const express = require('express')
 const { getVendor, insertVendor } = require('../controller/vendors')
-const { insertUser, loginUser, getInfoUser, getAllUser } = require('../controller/controllerUser')
+const { insertUser, loginUser, getInfoUser, getAllUser, updateUser } = require('../controller/controllerUser')
 const { getDepartament, insertDepartment } = require('../controller/controllerDepartment')
 const auth = require('../middleware/auth')
 const { getAllReportComputer, saveReportComputer } = require('../controller/controllerFichaGeneral')
@@ -9,7 +9,8 @@ const router = express.Router()
 //access to login and create user
 router.post('/createUser', insertUser)
 router.post('/loginUser', loginUser)
-router.get('/getInfoUser', auth ,getInfoUser)
+router.post('/updateUser', updateUser)
+router.get('/getInfoUser', auth, getInfoUser)
 router.get('/getAllUser', getAllUser)
 // routers for crud proveedores
 router.get('/getVendors', getVendor)

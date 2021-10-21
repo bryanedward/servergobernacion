@@ -1,0 +1,556 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.8
+-- Dumped by pg_dump version 12.8
+
+-- Started on 2021-10-20 16:57:08
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 232 (class 1255 OID 25573)
+-- Name: componentred(text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.componentred(cedulausuario text) RETURNS TABLE(cod_fichared text, observacion_fichared text, tipo_fichared text, nombreusuario text)
+    LANGUAGE sql
+    AS $$
+	SELECT cod_fichared, observacion_fichared ,tipo_fichared,userx.nomb_usuar as nombreusuario FROM  tmaefichared
+  INNER JOIN tmaeusuar userx ON pfced_usuario = userx.cedul_usuar
+  INNER JOIN tmaeusuar userjef ON  pfcedjef_usuario = userjef.cedul_usuar
+  INNER JOIN tmaeusuar usertec ON  pfcedtec_usuario = usertec.cedul_usuar
+  WHERE pfced_usuario = cedulausuario;
+$$;
+
+
+ALTER FUNCTION public.componentred(cedulausuario text) OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 229 (class 1255 OID 25563)
+-- Name: guardarcompone(character varying, character varying, date, character varying, character varying, integer, text, integer, character varying, character varying, text); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.guardarcompone(cod_equipo character varying, descrip_equipo character varying, fechactrol_equipo date, firma_equipo character varying, pfced_usuario character varying, pfcod_departament integer, arraycomponents text, pfcod_proveed integer, nomb_soft character varying, descrip_soft character varying, licencia_soft text)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+ omgjson json := arrayComponents;
+ i json;
+BEGIN
+	INSERT INTO thistctrolequipo VALUES (cod_equipo, descrip_equipo,fechactrol_equipo, firma_equipo, pfced_usuario, 
+										 pfcod_departament);	
+	FOR i IN SELECT * FROM json_array_elements(omgjson)
+  	LOOP
+	INSERT INTO tmaecomponent ( descrip_component, marca_component, model_component, 
+	 numerser_component, pfcod_proveed, pfcod_equipo) 
+	 VALUES (i->>'descrip_component', i->>'marca_component', i->>'model_component', 
+	 i->>'numerser_component', CAST(i->>'pfcod_proveed' AS INTEGER), i->>'pfcod_equipo' );
+  END LOOP;
+  INSERT INTO tmaesoft( nomb_soft, descrip_soft, licencia_soft, pfcod_proveed, pfcod_equipo) 
+	 VALUES ( nomb_soft, descrip_soft, licencia_soft, pfcod_proveed, cod_equipo);
+END;
+$$;
+
+
+ALTER PROCEDURE public.guardarcompone(cod_equipo character varying, descrip_equipo character varying, fechactrol_equipo date, firma_equipo character varying, pfced_usuario character varying, pfcod_departament integer, arraycomponents text, pfcod_proveed integer, nomb_soft character varying, descrip_soft character varying, licencia_soft text) OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 230 (class 1255 OID 25567)
+-- Name: guardareportred(character varying, character varying, character varying, character varying, character varying, character varying, text); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.guardareportred(cod_fichared character varying, observacion_fichared character varying, tipo_fichared character varying, pfced_usuario character varying, pfcedtec_usuario character varying, pfcedjef_usuario character varying, componentesred text)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+ omgjson json := componentesred;
+ i json;
+BEGIN
+INSERT INTO tmaefichared(cod_fichared,observacion_fichared, tipo_fichared,pfced_usuario, 
+pfcedtec_usuario, pfcedjef_usuario) 
+VALUES ( cod_fichared,observacion_fichared,tipo_fichared,pfced_usuario, 
+pfcedtec_usuario, pfcedjef_usuario);
+
+	FOR i IN SELECT * FROM json_array_elements(omgjson)
+  	LOOP
+	 INSERT INTO tmaecomponentred
+	( codserial_componentred, 
+	 descrip_componentred, marca_componentred, modelo_componentred, 
+	 macaddress_componentred, ipaddress_componentred
+, numerser_componentred, pfcod_fichared, pfcod_departament) VALUES (i->>'codserial_componentred', 
+			 i->>'descrip_componentred', i->>'marca_componentred', 
+	 		 i->>'modelo_componentred', i->>'macaddress_componentred' , 
+			 i->>'ipaddress_componentred',i->>'numerser_componentred',
+			i->>'pfcod_fichared', CAST(i->>'pfcod_departament' AS INTEGER));
+  END LOOP;
+END;
+$$;
+
+
+ALTER PROCEDURE public.guardareportred(cod_fichared character varying, observacion_fichared character varying, tipo_fichared character varying, pfced_usuario character varying, pfcedtec_usuario character varying, pfcedjef_usuario character varying, componentesred text) OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 231 (class 1255 OID 25568)
+-- Name: guardarreportcerradored(character varying, character varying, character varying, character varying, character varying, character varying, text); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.guardarreportcerradored(cod_fichared character varying, observacion_fichared character varying, tipo_fichared character varying, pfced_usuario character varying, pfcedtec_usuario character varying, pfcedjef_usuario character varying, componentesred text)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+omgjson json := componentesred;
+i json;
+BEGIN
+INSERT INTO tmaefichared(cod_fichared,observacion_fichared, tipo_fichared, pfced_usuario, pfcedtec_usuario, pfcedjef_usuario) 
+VALUES(cod_fichared,observacion_fichared, tipo_fichared, pfced_usuario, pfcedtec_usuario, pfcedjef_usuario);
+FOR i IN SELECT * FROM json_array_elements(omgjson)
+LOOP
+INSERT INTO tmaecomponentred(descrip_componentred, marca_componentred, modelo_componentred, 
+macaddress_componentred, ipaddress_componentred, numerser_componentred, pfcod_fichared, pfcod_departament) 
+VALUES (i->>'descrip_componentred', i->>'marca_componentred', i->>'modelo_componentred', 
+i->>'macaddress_componentred' , i->>'ipaddress_componentred',i->>'numerser_componentred',
+i->>'pfcod_fichared', CAST(i->>'pfcod_departament' AS INTEGER));
+END LOOP;
+END;
+$$;
+
+
+ALTER PROCEDURE public.guardarreportcerradored(cod_fichared character varying, observacion_fichared character varying, tipo_fichared character varying, pfced_usuario character varying, pfcedtec_usuario character varying, pfcedjef_usuario character varying, componentesred text) OWNER TO pwafajlrimagmw;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 202 (class 1259 OID 25334)
+-- Name: thistctrolequipo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.thistctrolequipo (
+    cod_equipo text NOT NULL,
+    descrip_equipo text,
+    fechactrol_equipo date NOT NULL,
+    firma_equipo text,
+    pfced_usuario character varying(15),
+    pfcod_departament integer,
+    observ_equipo text,
+    grupoctrol_equipo text
+);
+
+
+ALTER TABLE public.thistctrolequipo OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 203 (class 1259 OID 25340)
+-- Name: thistproveed; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.thistproveed (
+    cod_proveed integer NOT NULL,
+    nombre_proveed character varying(30) NOT NULL,
+    descrip_proveed text NOT NULL,
+    fechadquis_proveed date NOT NULL
+);
+
+
+ALTER TABLE public.thistproveed OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 204 (class 1259 OID 25346)
+-- Name: thistproveed_cod_proveed_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.thistproveed ALTER COLUMN cod_proveed ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.thistproveed_cod_proveed_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 205 (class 1259 OID 25348)
+-- Name: tmaecomponent; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tmaecomponent (
+    cod_component integer NOT NULL,
+    marca_component character varying(20) NOT NULL,
+    model_component character varying(25) NOT NULL,
+    numerser_component character varying(25) NOT NULL,
+    pfcod_proveed integer,
+    pfcod_equipo text,
+    fechverf_component date DEFAULT CURRENT_DATE,
+    descrip_component text
+);
+
+
+ALTER TABLE public.tmaecomponent OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 206 (class 1259 OID 25355)
+-- Name: tmaecomponent_cod_component_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.tmaecomponent ALTER COLUMN cod_component ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.tmaecomponent_cod_component_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 214 (class 1259 OID 25520)
+-- Name: tmaecomponentred; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tmaecomponentred (
+    cod_componentred integer NOT NULL,
+    macaddress_componentred text,
+    ipaddress_componentred text,
+    codserial_componentred text,
+    pfcod_departament integer,
+    descrip_componentred text,
+    marca_componentred text,
+    modelo_componentred text,
+    numerser_componentred text,
+    pfcod_fichared text
+);
+
+
+ALTER TABLE public.tmaecomponentred OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 215 (class 1259 OID 25538)
+-- Name: tmaecomponentred_cod_componentred_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.tmaecomponentred ALTER COLUMN cod_componentred ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.tmaecomponentred_cod_componentred_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 207 (class 1259 OID 25357)
+-- Name: tmaedepartament; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tmaedepartament (
+    cod_departament integer NOT NULL,
+    nomb_departament character varying(25) NOT NULL,
+    descrip_departament text NOT NULL,
+    pfcod_componentred integer
+);
+
+
+ALTER TABLE public.tmaedepartament OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 208 (class 1259 OID 25363)
+-- Name: tmaedepartament_cod_departament_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.tmaedepartament ALTER COLUMN cod_departament ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.tmaedepartament_cod_departament_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 216 (class 1259 OID 25541)
+-- Name: tmaefichared; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tmaefichared (
+    cod_fichared text NOT NULL,
+    observacion_fichared text,
+    pfcedtec_usuario text,
+    pfcedjef_usuario text,
+    pfced_usuario text,
+    tipo_fichared text
+);
+
+
+ALTER TABLE public.tmaefichared OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 209 (class 1259 OID 25365)
+-- Name: tmaesoft; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tmaesoft (
+    cod_softw integer NOT NULL,
+    nomb_soft character varying(25) NOT NULL,
+    descrip_soft text NOT NULL,
+    licencia_soft text NOT NULL,
+    pfcod_proveed integer,
+    pfcod_equipo text,
+    utili_soft integer,
+    observac_soft text
+);
+
+
+ALTER TABLE public.tmaesoft OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 210 (class 1259 OID 25371)
+-- Name: tmaesoft_cod_softw_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.tmaesoft ALTER COLUMN cod_softw ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.tmaesoft_cod_softw_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 211 (class 1259 OID 25373)
+-- Name: tmaeusuar; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tmaeusuar (
+    cedul_usuar character varying(15) NOT NULL,
+    nomb_usuar character varying(30) NOT NULL,
+    telef_usuar character varying(12) NOT NULL,
+    token_usuar text,
+    pass_usuar text NOT NULL,
+    rol_usuar character varying(20),
+    pfcod_departament integer,
+    grupo_usuar text
+);
+
+
+ALTER TABLE public.tmaeusuar OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 212 (class 1259 OID 25379)
+-- Name: vtmaegeneral; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vtmaegeneral AS
+ SELECT thistctrolequipo.cod_equipo,
+    tmaeusuar.cedul_usuar,
+    tmaeusuar.nomb_usuar,
+    tmaedepartament.nomb_departament,
+    thistproveed.nombre_proveed,
+    thistproveed.fechadquis_proveed,
+    tmaecomponent.fechverf_component
+   FROM ((((public.thistctrolequipo
+     JOIN public.tmaedepartament ON ((tmaedepartament.cod_departament = thistctrolequipo.pfcod_departament)))
+     JOIN public.tmaeusuar ON (((tmaeusuar.cedul_usuar)::text = (thistctrolequipo.pfced_usuario)::text)))
+     JOIN public.tmaecomponent ON ((tmaecomponent.pfcod_equipo = thistctrolequipo.cod_equipo)))
+     JOIN public.thistproveed ON ((thistproveed.cod_proveed = tmaecomponent.pfcod_proveed)))
+  WHERE (thistctrolequipo.cod_equipo = 'ASWE3'::text);
+
+
+ALTER TABLE public.vtmaegeneral OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 213 (class 1259 OID 25384)
+-- Name: vtmaeusuar; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vtmaeusuar AS
+ SELECT tmaeusuar.token_usuar
+   FROM public.tmaeusuar;
+
+
+ALTER TABLE public.vtmaeusuar OWNER TO pwafajlrimagmw;
+
+--
+-- TOC entry 2749 (class 2606 OID 25393)
+-- Name: tmaecomponent pk_tmaecomponent_cod_component; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaecomponent
+    ADD CONSTRAINT pk_tmaecomponent_cod_component PRIMARY KEY (cod_component);
+
+
+--
+-- TOC entry 2757 (class 2606 OID 25527)
+-- Name: tmaecomponentred pk_tmaecomponentred_cod_componentred; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaecomponentred
+    ADD CONSTRAINT pk_tmaecomponentred_cod_componentred PRIMARY KEY (cod_componentred);
+
+
+--
+-- TOC entry 2751 (class 2606 OID 25395)
+-- Name: tmaedepartament pk_tmaedepartament_cod_departament; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaedepartament
+    ADD CONSTRAINT pk_tmaedepartament_cod_departament PRIMARY KEY (cod_departament);
+
+
+--
+-- TOC entry 2759 (class 2606 OID 25548)
+-- Name: tmaefichared pk_tmaefichared_cod_fichared; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaefichared
+    ADD CONSTRAINT pk_tmaefichared_cod_fichared PRIMARY KEY (cod_fichared);
+
+
+--
+-- TOC entry 2753 (class 2606 OID 25397)
+-- Name: tmaesoft pk_tmaesoft_cod_softw; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaesoft
+    ADD CONSTRAINT pk_tmaesoft_cod_softw PRIMARY KEY (cod_softw);
+
+
+--
+-- TOC entry 2745 (class 2606 OID 25399)
+-- Name: thistctrolequipo thistctrolequipo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.thistctrolequipo
+    ADD CONSTRAINT thistctrolequipo_pkey PRIMARY KEY (cod_equipo);
+
+
+--
+-- TOC entry 2747 (class 2606 OID 25401)
+-- Name: thistproveed thistproveed_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.thistproveed
+    ADD CONSTRAINT thistproveed_pkey PRIMARY KEY (cod_proveed);
+
+
+--
+-- TOC entry 2755 (class 2606 OID 25403)
+-- Name: tmaeusuar thistusuar_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaeusuar
+    ADD CONSTRAINT thistusuar_pkey PRIMARY KEY (cedul_usuar);
+
+
+--
+-- TOC entry 2760 (class 2606 OID 25406)
+-- Name: thistctrolequipo fk_thistctrolequipo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.thistctrolequipo
+    ADD CONSTRAINT fk_thistctrolequipo FOREIGN KEY (pfcod_departament) REFERENCES public.tmaedepartament(cod_departament);
+
+
+--
+-- TOC entry 2761 (class 2606 OID 25411)
+-- Name: thistctrolequipo fk_thistctrolequipo_tmaeusuar; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.thistctrolequipo
+    ADD CONSTRAINT fk_thistctrolequipo_tmaeusuar FOREIGN KEY (pfced_usuario) REFERENCES public.tmaeusuar(cedul_usuar);
+
+
+--
+-- TOC entry 2762 (class 2606 OID 25421)
+-- Name: tmaecomponent fk_tmaecomponent_codequipo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaecomponent
+    ADD CONSTRAINT fk_tmaecomponent_codequipo FOREIGN KEY (pfcod_equipo) REFERENCES public.thistctrolequipo(cod_equipo);
+
+
+--
+-- TOC entry 2764 (class 2606 OID 25431)
+-- Name: tmaesoft fk_tmaesoft_thistctrolequipo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaesoft
+    ADD CONSTRAINT fk_tmaesoft_thistctrolequipo FOREIGN KEY (pfcod_equipo) REFERENCES public.thistctrolequipo(cod_equipo);
+
+
+--
+-- TOC entry 2765 (class 2606 OID 25436)
+-- Name: tmaesoft fk_tmaesoft_thistproveed; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaesoft
+    ADD CONSTRAINT fk_tmaesoft_thistproveed FOREIGN KEY (pfcod_proveed) REFERENCES public.thistproveed(cod_proveed);
+
+
+--
+-- TOC entry 2766 (class 2606 OID 25441)
+-- Name: tmaeusuar fk_tmaeusuar_tmaedepartament; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaeusuar
+    ADD CONSTRAINT fk_tmaeusuar_tmaedepartament FOREIGN KEY (pfcod_departament) REFERENCES public.tmaedepartament(cod_departament);
+
+
+--
+-- TOC entry 2763 (class 2606 OID 25446)
+-- Name: tmaecomponent tmaecomponent_pkcodproveed_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaecomponent
+    ADD CONSTRAINT tmaecomponent_pkcodproveed_fkey FOREIGN KEY (pfcod_proveed) REFERENCES public.thistproveed(cod_proveed);
+
+
+--
+-- TOC entry 2768 (class 2606 OID 25533)
+-- Name: tmaecomponentred tmaecomponentred_pfcod_departament_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaecomponentred
+    ADD CONSTRAINT tmaecomponentred_pfcod_departament_fkey FOREIGN KEY (pfcod_departament) REFERENCES public.tmaedepartament(cod_departament);
+
+
+--
+-- TOC entry 2767 (class 2606 OID 25554)
+-- Name: tmaecomponentred tmaecomponentred_pkcod_fichared_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaecomponentred
+    ADD CONSTRAINT tmaecomponentred_pkcod_fichared_fkey FOREIGN KEY (pfcod_fichared) REFERENCES public.tmaefichared(cod_fichared);
+
+
+--
+-- TOC entry 2769 (class 2606 OID 25549)
+-- Name: tmaefichared tmaefichared_pfced_usuario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tmaefichared
+    ADD CONSTRAINT tmaefichared_pfced_usuario_fkey FOREIGN KEY (pfced_usuario) REFERENCES public.tmaeusuar(cedul_usuar);
+
+
+-- Completed on 2021-10-20 16:57:16
+
+--
+-- PostgreSQL database dump complete
+--
+

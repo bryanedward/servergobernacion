@@ -66,6 +66,26 @@ var modelUser = {
         } catch (error) {
             res.status(404).send({ message: "variables incorrrect" })
         }
+    },
+    updateUser: async function (req, res) {
+        //update user
+        const { nomb_usuar, telef_usuar, cedul_usuar, pass_usuar } = req.body
+        var validate = nomb_usuar === undefined || telef_usuar === undefined  || cedul_usuar === undefined  || pass_usuar === undefined  ? false : true;
+        if (validate) {
+            var passEncript = await bcrypt.hash(pass_usuar, 10);
+            await client.query(`update tmaeusuar set nomb_usuar = '${nomb_usuar}', 
+                telef_usuar = '${telef_usuar}', pass_usuar = '${passEncript}' 
+                where cedul_usuar = '${cedul_usuar}'`, (err, data) => {
+                if (data.rowCount === 0) {
+                    res.json({ message: 'cant update user' })
+                } else {
+                    res.json({ message: 'update user' })
+                }
+            })
+        } else {
+            res.json({ message: 'falta de datos' })
+        }
+
     }
 }
 

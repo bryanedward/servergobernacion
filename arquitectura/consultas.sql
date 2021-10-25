@@ -1,1 +1,1 @@
-select * from tmaeusuar
+select * from thistproveed

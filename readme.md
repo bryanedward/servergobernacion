@@ -101,8 +101,6 @@ TOKENKKEY= llave secreta para el token
 ### Rutas para guardar reportes de ficha de red
 
 >La ruta saveReportCerradRed la parametro componentesred debe ser envia en un array junto de un json para que la funcion procedure de psql ejecute siguiente ejemplo
-
-
 ```js
 "componentesred":[
   { 
@@ -117,8 +115,25 @@ TOKENKKEY= llave secreta para el token
   }
 ]
 ```
+>La ruta saveReportRed la parametro componentesred debe ser envia en un array junto de un json para que la funcion procedure de psql ejecute siguiente ejemplo
+```js
+"componentesred":[
+  { 
+		"codserial_componentred":"1A9D2W-222", 
+		"descrip_componentred":"switch", 
+		"marca_componentred":"huawei", 
+		"modelo_componentred":"huawei-2x3", 
+		"macaddress_componentred":"00:3e:c1:9e:23:6b", 
+		"ipaddress_componentred":"192.168.20.10",
+		"numerser_componentred":"3193156-36-e343", 
+		"pfcod_fichared":"0002", 
+		"pfcod_departament":1
+  }
+]
+```
 
 | rutas| mthd https | descripcion| parametros / body | middleware |
 | -----| ---------- | ---------- |------------------ | ---------- |
+| saveReportRed | post | guardar el informe total| cod_fichared, observacion_fichared,pfced_usuario, pfcedtec_usuario, pfcedjef_usuario, componentesred | no |
 | saveReportCerradRed | post | guardar el informe total| cod_fichared, observacion_fichared,pfced_usuario, pfcedtec_usuario, pfcedjef_usuario, componentesred | no |
 

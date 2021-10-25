@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "requestCert": true,
+                    "rejectUnauthorized": false
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "connectString": "postgres://pwafajlrimagmw:6dc71c448cd237f983dd5c333d1137270c21bd6967b2bbae9b12aa772378e265@ec2-44-197-94-126.compute-1.amazonaws.com:5432/d1hfhopl1539s9",
+            "name": "servergober"
+        }
+    ]
+}

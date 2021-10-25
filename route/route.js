@@ -4,7 +4,7 @@ const { insertUser, loginUser, getInfoUser, getAllUser, updateUser } = require('
 const { getDepartament, insertDepartment } = require('../controller/controllerDepartment')
 const auth = require('../middleware/auth')
 const { getAllReportComputer, saveReportComputer } = require('../controller/controllerFichaGeneral')
-const { saveReportRed, getAllReportRed } = require('../controller/controllerRed')
+const { saveReportRed, getAllReportRed } = require('../controller/controllerFichaRed')
 const router = express.Router()
 //access to login and create user
 router.post('/createUser', insertUser)

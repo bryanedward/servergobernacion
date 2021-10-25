@@ -3,7 +3,7 @@ const client = require("../config")
 var modelRed = {
 
     saveReportRed: async function (req, res) {
-        //save report red
+        //TODO: save report red
         const { cod_fichared, observacion_fichared,
             pfced_usuario, pfcedtec_usuario,
             pfcedjef_usuario, componentesred } = req.body
@@ -25,7 +25,7 @@ var modelRed = {
     },
 
     getAllReportRed: async function (req, res) {
-        //get list of the report create for users
+        //TODO:get list of the report red create for users
         await client.query(`select * from componentred('${req.body.cedul_usuar}')`, (err, data) => {
             res.json(data.rows)
         })

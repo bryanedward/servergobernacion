@@ -3,6 +3,7 @@ const client = require("../config")
 var modelCloseRed = {
 
     saveReportCerradRed: async function (req, res) {
+        //TODO: save report of red
         const { cod_fichared, observacion_fichared,
             pfced_usuario, pfcedtec_usuario,
             pfcedjef_usuario, componentesred } = req.body

@@ -1,9 +1,11 @@
--- actualizacion 18/10/21
+
+-- actualizacion 24 /10/21
 --esta funcion hace relacion a la ruta saveReport para guardar una ficha general de los equipos
-CREATE OR REPLACE PROCEDURE public.guardarcompone(cod_equipo character varying, descrip_equipo character varying, 
+CREATE OR REPLACE PROCEDURE public.guardareportequipop(cod_equipo character varying, descrip_equipo character varying, 
 												  fechactrol_equipo date, firma_equipo character varying, 
-												  pfced_usuario character varying, pfcod_departament integer, 
-												  arraycomponents text, pfcod_proveed integer, nomb_soft character varying, 
+												  grupoctrol_equipo text,pfced_usuario character varying, 
+												  pfcod_departament integer,arraycomponents text, 
+												  pfcod_proveed integer, nomb_soft character varying, 
 												  descrip_soft character varying, licencia_soft text)
  LANGUAGE plpgsql
 AS $procedure$
@@ -11,8 +13,10 @@ DECLARE
  omgjson json := arrayComponents;
  i json;
 BEGIN
-	INSERT INTO thistctrolequipo VALUES (cod_equipo, descrip_equipo,fechactrol_equipo, firma_equipo, pfced_usuario, 
-										 pfcod_departament);	
+	INSERT INTO thistctrolequipo(cod_equipo, descrip_equipo,fechactrol_equipo, firma_equipo, 
+	pfced_usuario, pfcod_departament,grupoctrol_equipo) 
+    VALUES (cod_equipo, descrip_equipo,fechactrol_equipo, firma_equipo, 
+	pfced_usuario, pfcod_departament,grupoctrol_equipo);	
 	FOR i IN SELECT * FROM json_array_elements(omgjson)
   	LOOP
 	INSERT INTO tmaecomponent ( descrip_component, marca_component, model_component, 
@@ -25,9 +29,8 @@ BEGIN
 END;
 $procedure$
 
-
+-- actualizacion 18/10/21
 -- guardar el reprte general de red hace referencia con la ruta /saveReportRed
-
 CREATE OR REPLACE PROCEDURE public.guardareportRed(
 	cod_fichared character varying,observacion_fichared character varying,
 	tipo_fichared character varying,pfced_usuario character varying, 

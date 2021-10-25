@@ -8,7 +8,7 @@ var modelUser = {
         try {
             var infoUser = await client.query(`SELECT cedul_usuar, nomb_usuar,
             telef_usuar, rol_usuar FROM tmaeusuar`)
-            res.json(infoUser.rows[0])
+            res.json(infoUser.rows)
         } catch (error) {
             console.log(error);
         }

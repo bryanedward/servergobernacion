@@ -5,13 +5,14 @@ const { getDepartament, insertDepartment } = require('../controller/controllerDe
 const auth = require('../middleware/auth')
 const { getAllReportComputer, saveReportComputer } = require('../controller/controllerFichaGeneral')
 const { saveReportRed, getAllReportRed } = require('../controller/controllerFichaRed')
+const { saveReportCerradRed } = require('../controller/controllerCerradoRed')
 const router = express.Router()
 //access to login and create user
 router.post('/createUser', insertUser)
 router.post('/loginUser', loginUser)
 router.post('/updateUser', updateUser)
 router.get('/getInfoUser', auth, getInfoUser)
-router.get('/getAllUser', getAllUser)
+router.get('/getUsers', getAllUser)
 // routers for crud proveedores
 router.get('/getVendors', getVendor)
 router.post('/insertVendors', insertVendor)
@@ -22,6 +23,7 @@ router.post('/insertdepartament', insertDepartment)
 router.post('/getReport', getAllReportComputer)
 router.post('/saveReport', saveReportComputer)
 router.post('/saveReportRed', saveReportRed)
+router.post('/saveReportCerradRed', saveReportCerradRed)
 router.post('/getAllReportRed', getAllReportRed)
 
 

@@ -6,7 +6,7 @@ const general = {
         //TODO: save report of the computers
         try {
             const { cod_equipo, descrip_equipo, fechactrol_equipo,
-                firma_equipo, grupoctrol_equipo,pfced_usuario, pfcod_departament,
+                firma_equipo, grupoctrol_equipo, pfced_usuario, pfcod_departament,
                 componentes, pfcod_proveed, nomb_soft, descrip_soft, licencia_soft
             } = req.body
 
@@ -33,6 +33,7 @@ const general = {
         await client.query(
             `
             select distinct thistctrolequipo.cod_equipo, thistctrolequipo.grupoctrol_equipo, 
+            thistctrolequipo.firma_equipo,
             tmaeusuar.cedul_usuar, tmaeusuar.nomb_usuar, 
             tmaedepartament.nomb_departament, thistproveed.nombre_proveed,
                 thistproveed.fechadquis_proveed, tmaecomponent.fechverf_component
@@ -52,6 +53,37 @@ const general = {
                 res.status(200).send(data.rows)
             }
         })
+    },
+    getComponentById: async function (req, res) {
+        //TODO: query component of a computer
+        const { cod_equipo } = req.body
+        var validate = cod_equipo === undefined ? false : true
+        if (validate) {
+            await client.query(`select marca_component, model_component, numerser_component, descrip_component from tmaecomponent inner join thistctrolequipo
+            on thistctrolequipo.cod_equipo = tmaecomponent.pfcod_equipo
+            where cod_equipo = '${cod_equipo}'`, (err, data) => {
+                res.send(data.rows)
+            })
+        } else {
+            res.json({ message: 'empty cod_equipo' })
+        }
+    },
+    getSoftwareByid: async function (req, res) {
+        //TODO: get Software of a report
+        const { cod_equipo } = req.body
+        var validate = cod_equipo === undefined ? false : true
+        if (validate) {
+
+            await client.query(`
+        select nomb_soft, descrip_soft, licencia_soft, observac_soft from thistctrolequipo INNER JOIN tmaesoft
+        on thistctrolequipo.cod_equipo = tmaesoft.pfcod_equipo
+        where cod_equipo = '${cod_equipo}'
+        `, (err, data) => {
+            res.send(data.rows)
+            })
+        } else {
+            res.json({ message: 'empty cod_equipo' })
+        }
     }
 }
 

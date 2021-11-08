@@ -45,21 +45,18 @@ var modelUser = {
     },
 
     loginUser: async function (req, res) {
-        //TODO:update token of the user 
+        //TODO:update token of the user and asisttencia with a trigger 
         try {
             const { pass_usuar, cedul_usuar } = req.body
             var queryUsuario = await client.query(`select pass_usuar from tmaeusuar where cedul_usuar = '${cedul_usuar}'`)
             var validatePass = await bcrypt.compare(pass_usuar, queryUsuario.rows[0].pass_usuar)
             if (validatePass) {
                 var updateToken = generateToken(cedul_usuar);
-                await client.query(`update tmaeusuar set token_usuar = '${updateToken}' 
-                where cedul_usuar = '${cedul_usuar}' RETURNING token_usuar`, (err, data) => {
-                    if (data.rowCount === 0) {
-                        res.json({ message: "data incorrect" })
-                    } else {
-                        res.status(200).send(data.rows[0])
-                    }
+                await client.query(`UPDATE tmaeusuar set tokem_usuar = '${updateToken}'
+                where cedul_usuar = '${cedul_usuar}' RETURNING token_usuar`,(error, data) => {
+                    console.log(data);
                 })
+                
             } else {
                 res.status(200).json({ message: "verific datas" })
             }

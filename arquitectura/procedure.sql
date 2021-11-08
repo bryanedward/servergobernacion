@@ -92,3 +92,29 @@ i->>'pfcod_fichared', CAST(i->>'pfcod_departament' AS INTEGER));
 END LOOP;
 END;
 $procedure$
+
+
+--actualizar token y insert asistencia // funcion probable
+create or replace function tokenregistusuar(tokenusuario text, cedulausuar text)
+returns table(token_usuar text)
+as
+$body$
+INSERT INTO thistasistencia(cedul_usuar) values(cedulausuar);
+update tmaeusuar set token_usuar = tokenusuario 
+                where cedul_usuar = cedulausuar RETURNING token_usuar;
+$body$
+language sql;
+
+-- function para actualizar la asistencia cada vez que un ingrese actualiza el registro
+CREATE or replace FUNCTION actualizaregistro() 
+   RETURNS TRIGGER 
+AS $$
+BEGIN
+IF NOT EXISTS(SELECT 1 FROM  thistasistencia where fecha_asistencia = CURRENT_DATE) then
+	INSERT INTO thistasistencia(fecha_asistencia, cedul_usuar) values (current_date, old.cedul_usuar);
+END IF;
+RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL
+create trigger tr_insert after update on tmaeusuar for each row execute procedure actualizaregistro() 
